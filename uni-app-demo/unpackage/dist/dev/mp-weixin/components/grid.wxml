@@ -1,0 +1,1 @@
+<view class="song-item data-v-619bb586"><image class="img data-v-619bb586" src="{{item.img}}"></image><view class="desc data-v-619bb586">{{item.title}}</view><view class="flex-box data-v-619bb586"><view class="price data-v-619bb586">{{"￥"+item.price}}</view><view class="market-price data-v-619bb586">{{item.marketPrice}}</view></view></view>

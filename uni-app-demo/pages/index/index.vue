@@ -1,69 +1,86 @@
 <template>
-	<view class="content">
-		<!-- <image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view> -->
-		<view>列表渲染</view>
-		<grid v-for="(item, index) in songList" :item="item" :key="index" />
+	<view>
+		<view class="banner">
+		<swiper class="swiper" indicator-dots="true" indicator-active-color="#ff372b" autoplay="true" interval="interval"
+		 :circular="true" indicator-color='rgba(255,255,255, .5)' duration="500">
+			<swiper-item v-for="(item,index) in swipers" :key="index">
+				<view class="item">
+					<image :src="item.imageUrl" class="img"></image>
+					<view class="tag">{{item.typeTitle}}</view>
+				</view>
+			</swiper-item>
+		</swiper>
+		</view>
 	</view>
 </template>
 
 <script>
-export default {
-	data() {
-		return {
-			songList: [
-				{
-					img: 'http://gw.alicdn.com/bao/uploaded/i3/1917047079/O1CN01VlEDD522AEJzpw3A5_!!2-item_pic.png_360x10000.jpg',
-					title: 'Apple/苹果 iPhone 11 Pro',
-					price: '8699.00',
-					marketPrice: '￥8699.00'
-				},
-				{
-					img: 'http://gw.alicdn.com/bao/uploaded/i3/1917047079/O1CN01VlEDD522AEJzpw3A5_!!2-item_pic.png_360x10000.jpg',
-					title: 'Apple/苹果 iPhone 11 Pro',
-					price: '8699.00',
-					marketPrice: '￥8699.00'
-				},
-				{
-					img: 'http://gw.alicdn.com/bao/uploaded/i3/1917047079/O1CN01VlEDD522AEJzpw3A5_!!2-item_pic.png_360x10000.jpg',
-					title: 'Apple/苹果 iPhone 11 Pro',
-					price: '8699.00',
-					marketPrice: '￥8699.00'
-				}
-			]
-		};
-	},
-	onLoad() {},
-	methods: {}
-};
+	var that;
+	export default {
+		data() {
+			return {
+				swipers: [],
+				loading: false
+			};
+		},
+		onLoad() {
+			that = this;
+			this.getBanner()
+		},
+
+		methods: {
+			getBanner() {
+				// this.loading = true;
+				uni.request({
+					url: that.$baseUrl+"/banner",
+					method: 'GET',
+					data: {},
+					success: res => {
+						that.swipers = res.data.banners
+					},
+					fail: () => {},
+					complete: () => {
+						// this.loading = false;
+					}
+				});
+			}
+		}
+	}
 </script>
 
-<style>
-.content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-
-.logo {
-	height: 200rpx;
-	width: 200rpx;
-	margin-top: 200rpx;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 50rpx;
-}
-
-.text-area {
-	display: flex;
-	justify-content: center;
-}
-
-.title {
-	font-size: 36rpx;
-	color: #8f8f94;
+<style lang="scss">
+.banner {
+	width: 100%;
+	height: 268rpx;
+	margin: 30rpx auto 44rpx;
+	.swiper {
+		height: 268rpx;
+	}
+	.item {
+		width: 686rpx;
+		height: 268rpx;
+		margin: 0 auto;
+		border-radius: 14rpx;
+		position: relative;
+		display: block;
+		overflow: hidden;
+	}
+	.img {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+	.tag {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		height: 34rpx;
+		padding: 0 14rpx;
+		line-height: 34rpx;
+		color: #fff;
+		background: #43a5f0;
+		z-index: 10;
+		border-top-left-radius: 14rpx;
+	}
 }
 </style>
